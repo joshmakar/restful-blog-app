@@ -1,0 +1,5 @@
+# Ignore Sublime Config Files
+*.sublime-*
+
+# Ignore node_modules
+node_modules
