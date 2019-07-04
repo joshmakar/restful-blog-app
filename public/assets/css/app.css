@@ -1,3 +1,21 @@
 .ui.menu.fixed {
   position: sticky;
 }
+
+#delete_form {
+  display: inline;
+}
+
+.main {
+  margin-top: 50px !important;
+}
+
+.icon>span {
+  display: inline-block;
+  max-width: 0;
+  overflow: hidden;
+}
+
+.icon:hover>span {
+  max-width: 100%;
+}

@@ -2,15 +2,22 @@
 // Setup and configure environment
 //////////////////////////////////////////////////
 
-const express      = require('express'),
-      bodyParser   = require('body-parser'),
-      mongoose     = require('mongoose'),
-      app          = express();
+// Load Packages
+const express           = require('express'),
+      app               = express(),
+      bodyParser        = require('body-parser'),
+      mongoose          = require('mongoose'),
+      methodOverride    = require('method-override'),
+      expressSanitizer  = require('express-sanitizer');
 
+// App Configuration
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(expressSanitizer());
+app.use(methodOverride('_method'));
 
+// Connect to DB
 mongoose.connect(
   'mongodb://localhost/restful_blog_app',
   { useNewUrlParser: true }
@@ -57,6 +64,7 @@ app.get('/blogs/new', (req, res) => {
 
 // CREATE - Save new blog entry to DB then redirect
 app.post('/blogs', (req, res) => {
+  req.body.blog.body = req.sanitize(req.body.blog.body);
   Blog.create(req.body.blog, (err, newBlog) => {
     if (err) {
       res.render('new');
@@ -84,6 +92,30 @@ app.get('/blogs/:id/edit', (req, res) => {
       res.redirect('/blogs');
     } else {
       res.render('edit', {blog: foundBlog});
+    }
+  });
+});
+
+// UPDATE - Save blog updates to DB
+app.put('/blogs/:id', (req, res) => {
+  let blogId = req.params.id;
+  Blog.findByIdAndUpdate(blogId, req.body.blog, (err, updatedBlog) => {
+    if (err) {
+      res.redirect('/blogs');
+    } else {
+      res.redirect(`/blogs/${blogId}`);
+    }
+  });
+});
+
+// DESTROY - Remove blog entry from DB
+app.delete('/blogs/:id', (req, res) => {
+  let blogId = req.params.id;
+  Blog.findByIdAndDelete(blogId, err => {
+    if (err) {
+      res.redirect('/blogs');
+    } else {
+      res.redirect('/blogs');
     }
   });
 });
