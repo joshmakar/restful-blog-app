@@ -16,3 +16,5 @@ A blog application built as a way to study RESTful routes.
 ## Authors
 
 * Josh Makar - Based off the Udemy course [The Web Developer Bootcamp](https://www.udemy.com/the-web-developer-bootcamp)
+
+![Screenshot of Restful Blog App](screenshot.jpg?raw=true "Screenshot of Restful Blog App")
